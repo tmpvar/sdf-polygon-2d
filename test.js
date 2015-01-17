@@ -75,3 +75,51 @@ test('square with island in hole', function(t) {
   t.equal(sdf(20, 0), 10)
   t.end();
 });
+
+
+test('proper containment', function(t) {
+
+  var hull1 = [
+    [-10, -10],
+    [-10,  10],
+    [ 10,  10],
+    [ 10, -10]
+  ];
+
+  var hull2 = [
+    [ 10,  10],
+    [ 10,  30],
+    [ 30,  30],
+    [ 30,  10]
+  ];
+
+  var hole1 = [
+    [-5, -5],
+    [-5,  5],
+    [ 5,  5],
+    [ 5, -5]
+  ];
+
+  var hole2 = [
+    [ 15, 15],
+    [ 15, 25],
+    [ 25, 25],
+    [ 25, 15]
+  ];
+
+
+  var sdf = createSDF([hull1, hull2, hole1, hole2]);
+
+
+  t.equal(sdf(0, 0), 5)
+  t.equal(sdf(-7.5, 0), -2.5)
+  t.equal(sdf(-5, 0), 0)
+  t.equal(sdf(-20, 0), 10)
+
+  t.equal(sdf(20, 20), 5)
+  t.equal(sdf(12.5, 20), -2.5)
+  t.equal(sdf(15, 25), 0)
+  t.equal(sdf(20, 0), 10)
+
+  t.end();
+});

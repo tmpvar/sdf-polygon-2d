@@ -27,7 +27,17 @@ function createSDF(polygons) {
 
   for (var ci = 1; ci<l; ci++) {
     var pi = ci-1;
-    var contained = polys[pi].containsPolygon(polys[ci]);
+    var contained;
+
+    // find container
+    while (pi > -1) {
+      contained = polys[pi].containsPolygon(polys[ci])
+      if (contained) {
+        break;
+      }
+      pi--;
+    }
+
     holes[ci] = contained ? !holes[pi] : false;
 
     classifiers[ci] = createClassifier([polygons[ci]]);
