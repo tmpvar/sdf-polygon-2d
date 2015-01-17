@@ -5,6 +5,7 @@ module.exports = createSDF;
 
 var min = Math.min;
 var max = Math.max;
+var abs = Math.abs;
 
 function createSDF(polygons) {
 
@@ -13,21 +14,26 @@ function createSDF(polygons) {
   });
 
   polys.sort(function(a, b) {
-    return a.area() - b.area();
+    return  b.area() - a.area();
   });
 
   var l = polys.length;
   var holes = Array(l);
+  var classifiers = Array(l);
   holes[0] = false;
+  classifiers[0] = createClassifier([polygons[0]]);
+
+// TODO: containment in a different larger polygon
 
   for (var ci = 1; ci<l; ci++) {
     var pi = ci-1;
-    holes[ci] = polys[ci].contains(polys[pi]);
+    var contained = polys[pi].containsPolygon(polys[ci]);
+    holes[ci] = contained ? !holes[pi] : false;
+
+    classifiers[ci] = createClassifier([polygons[ci]]);
   }
 
   var scratch = vec2();
-
-  var classify = createClassifier(polygons);
   var s = [0, 0];
 
   return function evaluate(x, y) {
@@ -37,15 +43,17 @@ function createSDF(polygons) {
     s[1] = y;
 
     var d = Infinity;
-
+    var closest = null;
     for (var i=0; i<l; i++) {
       var cd = polys[i].closestPointTo(scratch).distance(scratch);
-      if (holes[i] && d < cd) {
-        d = -d;
+      if (cd < d) {
+        closest = i;
       }
+
       d = min(cd, d);
     }
 
-    return classify(s) > 0 ? -d : d;
+    var inside = classifiers[closest](s) > 0;
+    return (holes[closest] !== inside) ? -d : d;
   }
 }

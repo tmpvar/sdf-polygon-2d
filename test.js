@@ -42,3 +42,36 @@ test('square with hole', function(t) {
   t.equal(sdf(20, 0), 10)
   t.end();
 });
+
+test('square with island in hole', function(t) {
+
+  var hull = [
+    [-10, -10],
+    [-10,  10],
+    [ 10,  10],
+    [ 10, -10]
+  ];
+
+  var hole = [
+    [-5, -5],
+    [-5,  5],
+    [ 5,  5],
+    [ 5, -5]
+  ];
+
+  var island = [
+    [-2, -2],
+    [-2,  2],
+    [ 2,  2],
+    [ 2, -2]
+  ];
+
+  var sdf = createSDF([hull, hole, island]);
+
+  t.equal(sdf(0, 0), -2)
+  t.equal(sdf(2.5, 0), .5)
+  t.equal(sdf(-7.5, 0), -2.5)
+  t.equal(sdf(-5, 0), 0)
+  t.equal(sdf(20, 0), 10)
+  t.end();
+});
