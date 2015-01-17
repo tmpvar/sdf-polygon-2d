@@ -23,8 +23,6 @@ function createSDF(polygons) {
   holes[0] = false;
   classifiers[0] = createClassifier([polygons[0]]);
 
-// TODO: containment in a different larger polygon
-
   for (var ci = 1; ci<l; ci++) {
     var pi = ci-1;
     var contained;
