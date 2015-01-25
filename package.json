@@ -13,7 +13,7 @@
   },
   "name": "sdf-polygon-2d",
   "description": "sample the signed distance field of a polygon in 2d space",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "sdf-polygon-2d.js",
   "repository": {
     "type": "git",
