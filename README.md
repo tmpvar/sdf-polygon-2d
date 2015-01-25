@@ -18,10 +18,10 @@ var points = [
 ];
 
 // pass an array of polygons, including polygons with holes
-var sdf = createSDF([points]);
-console.log(sdf(0, 0)) // -10
-console.log(sdf(10, 0)) // 0
-console.log(sdf(20, 0)) // 10
+var sample = createSDF([points]);
+console.log(sample(0, 0)) // -10
+console.log(sample({ x: 10, y: 0 })) // 0
+console.log(sample([20, 0])) // 10
 ```
 
 more examples in [test.js](test.js)

@@ -52,6 +52,15 @@ function createSDF(polygons) {
   var s = [0, 0];
 
   return function evaluate(x, y) {
+
+    if (Array.isArray(x)) {
+      y = x[1];
+      x = x[0];
+    } else if (typeof x.x !== 'undefined') {
+      y = x.y;
+      x = x.x;
+    }
+
     scratch.x = x;
     scratch.y = y;
     s[0] = x;
