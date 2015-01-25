@@ -1,5 +1,6 @@
 var test = require('tape')
 var createSDF = require('./sdf-polygon-2d');
+var polygon = require('polygon');
 
 test('square', function(t) {
 
@@ -11,6 +12,23 @@ test('square', function(t) {
   ];
 
   var sdf = createSDF([points]);
+
+  t.equal(sdf(0, 0), -10)
+  t.equal(sdf(10, 0), 0)
+  t.equal(sdf(20, 0), 10)
+  t.end();
+});
+
+test('accepts an array of polygons (cube)', function(t) {
+
+  var p = polygon([
+    [-10, -10],
+    [-10,  10],
+    [ 10,  10],
+    [ 10, -10]
+  ]);
+
+  var sdf = createSDF([p]);
 
   t.equal(sdf(0, 0), -10)
   t.equal(sdf(10, 0), 0)

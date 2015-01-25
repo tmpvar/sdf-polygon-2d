@@ -8,9 +8,16 @@ var max = Math.max;
 var abs = Math.abs;
 
 function createSDF(polygons) {
+  var polypoints = Array(polygons.length);
 
-  var polys = polygons.map(function(points) {
-    return polygon(points);
+  var polys = polygons.map(function(points, i) {
+    if (points.toArray) {
+      polypoints[i] = points.toArray();
+      return points;
+    } else {
+      polypoints[i] = points;
+      return polygon(points);
+    }
   });
 
   polys.sort(function(a, b) {
@@ -21,7 +28,7 @@ function createSDF(polygons) {
   var holes = Array(l);
   var classifiers = Array(l);
   holes[0] = false;
-  classifiers[0] = createClassifier([polygons[0]]);
+  classifiers[0] = createClassifier([polypoints[0]]);
 
   for (var ci = 1; ci<l; ci++) {
     var pi = ci-1;
@@ -38,7 +45,7 @@ function createSDF(polygons) {
 
     holes[ci] = contained ? !holes[pi] : false;
 
-    classifiers[ci] = createClassifier([polygons[ci]]);
+    classifiers[ci] = createClassifier([polypoints[ci]]);
   }
 
   var scratch = vec2();
