@@ -1,6 +1,6 @@
 var polygon = require('polygon');
 var vec2 = require('vec2');
-var createClassifier = require('point-in-big-polygon');
+var classifyPoint = require("robust-point-in-polygon");
 module.exports = createSDF;
 
 var min = Math.min;
@@ -28,7 +28,6 @@ function createSDF(polygons) {
   var holes = Array(l);
   var classifiers = Array(l);
   holes[0] = false;
-  classifiers[0] = createClassifier([polypoints[0]]);
 
   for (var ci = 1; ci<l; ci++) {
     var pi = ci-1;
@@ -44,8 +43,6 @@ function createSDF(polygons) {
     }
 
     holes[ci] = contained ? !holes[pi] : false;
-
-    classifiers[ci] = createClassifier([polypoints[ci]]);
   }
 
   var scratch = vec2();
@@ -77,7 +74,7 @@ function createSDF(polygons) {
       d = min(cd, d);
     }
 
-    var inside = classifiers[closest](s) > 0;
+    var inside = classifyPoint(polygons[closest], s) < 0;
     return (holes[closest] !== inside) ? -d : d;
   }
 }

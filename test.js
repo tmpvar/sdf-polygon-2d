@@ -21,12 +21,12 @@ test('square', function(t) {
 
 test('accepts an array of polygons (cube)', function(t) {
 
-  var p = polygon([
+  var p = [
     [-10, -10],
     [-10,  10],
     [ 10,  10],
     [ 10, -10]
-  ]);
+  ];
 
   var sdf = createSDF([p]);
 
@@ -38,12 +38,12 @@ test('accepts an array of polygons (cube)', function(t) {
 
 test('cube - sample() accepts array', function(t) {
 
-  var p = polygon([
+  var p = [
     [-10, -10],
     [-10,  10],
     [ 10,  10],
     [ 10, -10]
-  ]);
+  ];
 
   var sdf = createSDF([p]);
 
@@ -55,12 +55,12 @@ test('cube - sample() accepts array', function(t) {
 
 test('cube - sample() accepts object', function(t) {
 
-  var p = polygon([
+  var p = [
     [-10, -10],
     [-10,  10],
     [ 10,  10],
     [ 10, -10]
-  ]);
+  ];
 
   var sdf = createSDF([p]);
 
@@ -163,7 +163,6 @@ test('proper containment', function(t) {
 
   var sdf = createSDF([hull1, hull2, hole1, hole2]);
 
-
   t.equal(sdf(0, 0), 5)
   t.equal(sdf(-7.5, 0), -2.5)
   t.equal(sdf(-5, 0), 0)
@@ -174,5 +173,18 @@ test('proper containment', function(t) {
   t.equal(sdf(15, 25), 0)
   t.equal(sdf(20, 0), 10)
 
+  t.end();
+});
+
+test('degeneracy (triangle)', function(t) {
+
+  var p = [
+    [-10,-10],
+    [-10,10],
+    [-25,-14]
+  ];
+
+  var sdf = createSDF([p]);
+  t.ok(sdf([17,  0]) > 0)
   t.end();
 });
